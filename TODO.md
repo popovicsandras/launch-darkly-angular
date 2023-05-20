@@ -1,0 +1,5 @@
+- routed component
+- visual component
+  - structural directive
+  - decorator
+- global services
