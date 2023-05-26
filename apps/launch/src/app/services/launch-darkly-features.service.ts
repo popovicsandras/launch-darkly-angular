@@ -1,28 +1,23 @@
-import { Inject, Injectable, InjectionToken } from '@angular/core';
+import { Inject, Injectable } from '@angular/core';
 import * as LDClient from 'launchdarkly-js-client-sdk';
 import { Observable } from 'rxjs';
+import { FeatureFlagConfigToken, FeaturesService, FlagChangeset, FlagSet } from './features.interface';
 
-export interface FeatureFlagConfig {
+export interface LDFeatureFlagConfig {
   clientKey: string;
   context: LDClient.LDContext;
   options?: LDClient.LDOptions
 }
 
-export const FeatureFlagConfigToken = new InjectionToken<FeatureFlagConfig>('FeatureFlagConfig');
-
-@Injectable({
-  providedIn: 'root'
-})
-export class FeaturesService {
+@Injectable()
+export class LDFeaturesService implements FeaturesService {
 
   private client!: LDClient.LDClient;
-  private change$!: Observable<LDClient.LDFlagChangeset>;
+  private change$!: Observable<FlagChangeset>;
 
-  constructor(@Inject(FeatureFlagConfigToken) private config: FeatureFlagConfig) {
-    console.log(config);
-  }
+  constructor(@Inject(FeatureFlagConfigToken) private config: LDFeatureFlagConfig) {}
 
-  init(): Observable<LDClient.LDFlagChangeset> {
+  init(): Observable<FlagChangeset> {
     return new Observable((subscriber) => {
       this.client = LDClient.initialize(this.config.clientKey, this.config.context, this.config.options);
       this.client.on('ready', () => {
@@ -53,11 +48,11 @@ export class FeaturesService {
     return reactiveFlags;
   }
 
-  getAllFlags() {
+  getAllFlags(): FlagSet {
     return this.client.allFlags();
   }
 
-  getFlags$() {
+  getFlags$(): Observable<FlagChangeset> {
     return this.change$;
   }
 }

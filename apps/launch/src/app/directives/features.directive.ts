@@ -1,8 +1,7 @@
-import { Directive, Input, TemplateRef, ViewContainerRef } from '@angular/core';
+import { Directive, Inject, Input, TemplateRef, ViewContainerRef } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { FeaturesService } from '../services/features.service';
 import { BehaviorSubject, combineLatest } from 'rxjs';
-import * as LDClient from 'launchdarkly-js-client-sdk';
+import { FeaturesService, FeaturesServiceToken, FlagChangeset } from '../services/features.interface';
 
 @Directive({
   /* eslint-disable-next-line @angular-eslint/directive-selector */
@@ -19,7 +18,7 @@ export class FeaturesDirective {
   }
 
   constructor(
-    private featuresService: FeaturesService,
+    @Inject(FeaturesServiceToken) private featuresService: FeaturesService,
     private templateRef: TemplateRef<any>,
     private viewContainer: ViewContainerRef) {
       combineLatest([this.featuresService.getFlags$(), this.inputUpdate$])
@@ -30,9 +29,8 @@ export class FeaturesDirective {
       });
   }
 
-  private updateView(flags: LDClient.LDFlagChangeset, features: string[]) {
+  private updateView(flags: FlagChangeset, features: string[]) {
     const shouldShow = features.every((feature) => flags[feature]?.current);
-    console.log(flags, features, shouldShow);
 
     if (shouldShow && !this.hasView) {
       this.viewContainer.createEmbeddedView(this.templateRef);
