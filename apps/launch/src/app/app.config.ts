@@ -1,7 +1,7 @@
 import { ApplicationConfig } from '@angular/core';
 import { provideRouter, withEnabledBlockingInitialNavigation } from '@angular/router';
 import { appRoutes } from './app.routes';
-import { provideHxPFeatures } from './providers/hxp-features.provider';
+import { provideHxPFeatures } from '@features';
 
 export const appConfig: ApplicationConfig = {
   providers: [

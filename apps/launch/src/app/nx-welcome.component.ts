@@ -1,7 +1,7 @@
 import { Component, ViewEncapsulation } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FeaturesDirective } from './directives/features.directive';
 import { LearningMaterialsComponent } from './learning-materials.component';
+import { FeaturesDirective } from '@features';
 
 @Component({
   selector: 'launch-darkly-angular-nx-welcome',
