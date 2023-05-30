@@ -5,7 +5,9 @@ import { provideHxPFeatures } from '@features';
 
 export const appConfig: ApplicationConfig = {
   providers: [
-    provideRouter(appRoutes, withEnabledBlockingInitialNavigation()),
+    // For functional router guars, withEnabledBlockingInitialNavigation can not be used, since routing happens before the features are loaded.
+    // provideRouter(appRoutes, withEnabledBlockingInitialNavigation()),
+    provideRouter(appRoutes),
     provideHxPFeatures( { url: 'http://localhost:4200/assets/flags.json' } ),
     // provideLaunchDarklyFeatures(
     //   {

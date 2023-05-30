@@ -25,6 +25,10 @@ export class HxPFeaturesService implements FeaturesService {
     );
   }
 
+  isOn(key: string): boolean {
+    return this.flags[key].current;
+  }
+
   getAllFlags(): FlagSet {
     return this.flags;
   }

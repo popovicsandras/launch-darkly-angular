@@ -17,6 +17,7 @@ export interface FlagSet {
 
 export interface FeaturesService {
   init(): Observable<FlagChangeset>;
+  isOn(key: string): boolean;
   getAllFlags(): FlagSet;
   getFlags$(): Observable<FlagChangeset>;
 }

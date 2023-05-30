@@ -1,5 +1,5 @@
-- routed component
-- visual component
-  - structural directive
-  - decorator
-- global services
+- [x] routed component
+- [x] visual component
+- [ ] global services
+- [ ] DebugFlagService
+- [ ] Being able to programmatically switch on/off flag for testing purposes

@@ -48,6 +48,10 @@ export class LDFeaturesService implements FeaturesService {
     return reactiveFlags;
   }
 
+  isOn(key: string): boolean {
+    return this.client.variation(key, false);
+  }
+
   getAllFlags(): FlagSet {
     return this.client.allFlags();
   }
