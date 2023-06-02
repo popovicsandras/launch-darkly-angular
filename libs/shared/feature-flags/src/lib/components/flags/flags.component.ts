@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import {
   FeaturesServiceToken,
   FeaturesAdminService,
-} from '../../services/features.interface';
+} from '../../interfaces/features.interface';
 import { Observable, map, tap } from 'rxjs';
 import { MatTableModule } from '@angular/material/table';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';

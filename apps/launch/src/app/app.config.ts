@@ -1,14 +1,8 @@
 import { ApplicationConfig } from '@angular/core';
-import {
-  provideRouter,
-  withEnabledBlockingInitialNavigation,
-} from '@angular/router';
+import { provideRouter, withEnabledBlockingInitialNavigation, } from '@angular/router';
 import { appRoutes } from './app.routes';
-import {
-  provideBasicFeatures,
-  provideHxPFeatures,
-  provideLaunchDarklyFeatures,
-} from '@feature-flags';
+import { provideBasicFeatures } from '@feature-flags';
+import { provideHxPFeatures, provideLaunchDarklyFeatures, } from '@features';
 
 export const appConfig: ApplicationConfig = {
   providers: [

@@ -1,12 +1,7 @@
 import { Inject, Injectable } from '@angular/core';
 import * as LDClient from 'launchdarkly-js-client-sdk';
 import { Observable, of } from 'rxjs';
-import {
-  FeatureFlagConfigToken,
-  FeaturesService,
-  FlagChangeset,
-  FlagSet,
-} from './features.interface';
+import { FeatureFlagConfigToken, FeaturesService, FlagChangeset, } from '@feature-flags';
 
 export interface LDFeatureFlagConfig {
   clientKey: string;

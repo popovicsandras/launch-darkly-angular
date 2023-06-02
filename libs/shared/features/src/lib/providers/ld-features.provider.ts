@@ -1,17 +1,6 @@
-import {
-  APP_INITIALIZER,
-  EnvironmentProviders,
-  makeEnvironmentProviders,
-} from '@angular/core';
-import {
-  FeatureFlagConfigToken,
-  FeaturesService,
-  FeaturesServiceToken,
-} from '../services/features.interface';
-import {
-  LDFeatureFlagConfig,
-  LDFeaturesService,
-} from '../services/launch-darkly-features.service';
+import { APP_INITIALIZER, EnvironmentProviders, makeEnvironmentProviders, } from '@angular/core';
+import { FeatureFlagConfigToken, FeaturesService, FeaturesServiceToken, } from '@feature-flags';
+import { LDFeatureFlagConfig, LDFeaturesService, } from '../services/launch-darkly-features.service';
 
 export function provideLaunchDarklyFeatures(
   featureFlagServiceConfig: LDFeatureFlagConfig

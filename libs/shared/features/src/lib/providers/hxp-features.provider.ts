@@ -1,19 +1,7 @@
-import {
-  APP_INITIALIZER,
-  EnvironmentProviders,
-  importProvidersFrom,
-  makeEnvironmentProviders,
-} from '@angular/core';
-import {
-  HxPFeatureFlagConfig,
-  HxPFeaturesService,
-} from '../services/hxp-features.service';
-import {
-  FeatureFlagConfigToken,
-  FeaturesService,
-  FeaturesServiceToken,
-} from '../services/features.interface';
+import { APP_INITIALIZER, EnvironmentProviders, importProvidersFrom, makeEnvironmentProviders, } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
+import { HxPFeatureFlagConfig, HxPFeaturesService, } from '../services/hxp-features.service';
+import { FeatureFlagConfigToken, FeaturesService, FeaturesServiceToken, } from '@feature-flags';
 
 export function provideHxPFeatures(
   featureFlagServiceConfig: HxPFeatureFlagConfig

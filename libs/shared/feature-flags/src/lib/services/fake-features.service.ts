@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
-import { FeaturesService, FlagChangeset } from './features.interface';
+import { FeaturesService, FlagChangeset } from '../interfaces/features.interface';
 
 @Injectable()
 export class FakeFeaturesService implements FeaturesService {

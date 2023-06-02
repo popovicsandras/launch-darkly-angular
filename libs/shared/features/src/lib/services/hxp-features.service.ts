@@ -5,8 +5,7 @@ import {
   FeatureFlagConfigToken,
   FeaturesService,
   FlagChangeset,
-  FlagSet,
-} from './features.interface';
+} from '@feature-flags';
 
 export interface HxPFeatureFlagConfig {
   url: string;
