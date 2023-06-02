@@ -15,7 +15,7 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@features": ["libs/features/src/index.ts"]
+      "@feature-flags": ["libs/shared/feature-flags/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]

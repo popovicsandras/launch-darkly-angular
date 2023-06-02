@@ -1,6 +1,6 @@
 import { Component, ViewEncapsulation } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FeaturesDirective } from '@features';
+import { FeaturesDirective } from '@feature-flags';
 import { LearningMaterialsComponent } from '../learning-materials/learning-materials.component';
 
 @Component({

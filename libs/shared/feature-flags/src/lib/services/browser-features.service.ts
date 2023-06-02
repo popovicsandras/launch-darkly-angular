@@ -1,6 +1,11 @@
 import { Inject, Injectable, Optional } from '@angular/core';
 import { Observable, Subject, of } from 'rxjs';
-import { FeatureFlagConfigToken, FlagChangeset, FeaturesService, FlagSet } from './features.interface';
+import {
+  FeatureFlagConfigToken,
+  FlagChangeset,
+  FeaturesService,
+  FlagSet,
+} from './features.interface';
 
 export interface BrowserFeatureFlagConfig {
   flags: FlagSet;
@@ -8,9 +13,13 @@ export interface BrowserFeatureFlagConfig {
 
 @Injectable()
 export class BrowserFeaturesService implements FeaturesService {
-  private flags$ = new Subject<FlagChangeset>;
+  private flags$ = new Subject<FlagChangeset>();
 
-  constructor(@Optional() @Inject(FeatureFlagConfigToken) private config: BrowserFeatureFlagConfig) {}
+  constructor(
+    @Optional()
+    @Inject(FeatureFlagConfigToken)
+    private config: BrowserFeatureFlagConfig
+  ) {}
 
   init(): Observable<FlagChangeset> {
     if (this.config) {

@@ -1,7 +1,12 @@
 import { Inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, of, tap } from 'rxjs';
-import { FeatureFlagConfigToken, FeaturesService, FlagChangeset, FlagSet } from './features.interface';
+import {
+  FeatureFlagConfigToken,
+  FeaturesService,
+  FlagChangeset,
+  FlagSet,
+} from './features.interface';
 
 export interface HxPFeatureFlagConfig {
   url: string;
@@ -20,7 +25,8 @@ export class HxPFeaturesService implements FeaturesService {
     return this.httpClient.get<FlagChangeset>(this.config.url).pipe(
       tap((flags) => {
         this.flags = Object.keys(flags).reduce((acc, flag) => {
-          return { ...acc, [flag]: { current: flags[flag], previous: null, } }; }, {});
+          return { ...acc, [flag]: { current: flags[flag], previous: null } };
+        }, {});
       })
     );
   }

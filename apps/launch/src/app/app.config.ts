@@ -1,7 +1,14 @@
 import { ApplicationConfig } from '@angular/core';
-import { provideRouter, withEnabledBlockingInitialNavigation } from '@angular/router';
+import {
+  provideRouter,
+  withEnabledBlockingInitialNavigation,
+} from '@angular/router';
 import { appRoutes } from './app.routes';
-import { provideBasicFeatures, provideHxPFeatures, provideLaunchDarklyFeatures } from '@features';
+import {
+  provideBasicFeatures,
+  provideHxPFeatures,
+  provideLaunchDarklyFeatures,
+} from '@feature-flags';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -11,7 +18,7 @@ export const appConfig: ApplicationConfig = {
 
     // provideBasicFeatures(), // It is supposed to be provided by ADF by default, but every app should reprovide it.
 
-    provideHxPFeatures( { url: 'http://localhost:4200/assets/flags.json' } ),
+    provideHxPFeatures({ url: 'http://localhost:4200/assets/flags.json' }),
 
     // provideLaunchDarklyFeatures(
     //   {

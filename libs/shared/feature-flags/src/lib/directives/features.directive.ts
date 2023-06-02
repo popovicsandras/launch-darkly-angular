@@ -1,7 +1,17 @@
-import { Directive, Inject, Input, TemplateRef, ViewContainerRef } from '@angular/core';
+import {
+  Directive,
+  Inject,
+  Input,
+  TemplateRef,
+  ViewContainerRef,
+} from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { BehaviorSubject, combineLatest } from 'rxjs';
-import { FeaturesService, FeaturesServiceToken, FlagChangeset } from '../services/features.interface';
+import {
+  FeaturesService,
+  FeaturesServiceToken,
+  FlagChangeset,
+} from '../services/features.interface';
 
 @Directive({
   /* eslint-disable-next-line @angular-eslint/directive-selector */
@@ -20,10 +30,11 @@ export class FeaturesDirective {
   constructor(
     @Inject(FeaturesServiceToken) private featuresService: FeaturesService,
     private templateRef: TemplateRef<any>,
-    private viewContainer: ViewContainerRef) {
-      combineLatest([this.featuresService.getFlags$(), this.inputUpdate$])
-        .pipe(takeUntilDestroyed())
-        .subscribe(([flags, features]: any) => this.updateView(flags, features));
+    private viewContainer: ViewContainerRef
+  ) {
+    combineLatest([this.featuresService.getFlags$(), this.inputUpdate$])
+      .pipe(takeUntilDestroyed())
+      .subscribe(([flags, features]: any) => this.updateView(flags, features));
   }
 
   private updateView(flags: FlagChangeset, features: string[]) {

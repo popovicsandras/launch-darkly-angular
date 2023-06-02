@@ -4,7 +4,6 @@ import { FeaturesService, FlagChangeset } from './features.interface';
 
 @Injectable()
 export class FakeFeaturesService implements FeaturesService {
-
   init(): Observable<FlagChangeset> {
     return of();
   }

@@ -1,7 +1,7 @@
 {
-  "name": "features",
-  "$schema": "../../node_modules/nx/schemas/project-schema.json",
-  "sourceRoot": "libs/features/src",
+  "name": "shared-feature-flags",
+  "$schema": "../../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "libs/shared/feature-flags/src",
   "prefix": "launch-darkly-angular",
   "tags": [],
   "projectType": "library",
@@ -10,14 +10,14 @@
       "executor": "@nx/angular:package",
       "outputs": ["{workspaceRoot}/dist/{projectRoot}"],
       "options": {
-        "project": "libs/features/ng-package.json"
+        "project": "libs/shared/feature-flags/ng-package.json"
       },
       "configurations": {
         "production": {
-          "tsConfig": "libs/features/tsconfig.lib.prod.json"
+          "tsConfig": "libs/shared/feature-flags/tsconfig.lib.prod.json"
         },
         "development": {
-          "tsConfig": "libs/features/tsconfig.lib.json"
+          "tsConfig": "libs/shared/feature-flags/tsconfig.lib.json"
         }
       },
       "defaultConfiguration": "production"
