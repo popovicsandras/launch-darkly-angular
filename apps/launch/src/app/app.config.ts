@@ -1,7 +1,7 @@
 import { ApplicationConfig } from '@angular/core';
 import { provideRouter, withEnabledBlockingInitialNavigation, } from '@angular/router';
 import { appRoutes } from './app.routes';
-import { provideBasicFeatures } from '@feature-flags';
+import { provideBasicFeatures, provideOverridableFeatures } from '@feature-flags';
 import { provideHxPFeatures, provideLaunchDarklyFeatures, } from '@features';
 
 export const appConfig: ApplicationConfig = {
@@ -13,6 +13,13 @@ export const appConfig: ApplicationConfig = {
     // provideBasicFeatures(), // It is supposed to be provided by ADF by default, but every app should reprovide it.
 
     provideHxPFeatures({ url: 'http://localhost:4200/assets/flags.json' }),
+
+    provideOverridableFeatures({
+      storageKey: 'hxp-feature-flags',
+      defaultFlagNames: {
+        'show-learning-materials': true,
+      }
+    }),
 
     // provideLaunchDarklyFeatures(
     //   {

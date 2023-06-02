@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import {
   FeaturesServiceToken,
   FeaturesAdminService,
+  FeaturesService,
 } from '../../interfaces/features.interface';
 import { Observable, map, tap } from 'rxjs';
 import { MatTableModule } from '@angular/material/table';
@@ -20,7 +21,7 @@ export class FlagsComponent {
   displayedColumns: string[] = ['position', 'flag', 'value'];
 
   constructor(
-    @Inject(FeaturesServiceToken) private featuresService: FeaturesAdminService
+    @Inject(FeaturesServiceToken) private featuresService: FeaturesService & FeaturesAdminService
   ) {
     this.flags$ = this.featuresService.getFlags$().pipe(
       map((flags) => {

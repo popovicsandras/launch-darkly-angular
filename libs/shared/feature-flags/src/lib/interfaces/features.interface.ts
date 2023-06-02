@@ -21,7 +21,7 @@ export interface FeaturesService {
   getFlags$(): Observable<FlagChangeset>;
 }
 
-export interface FeaturesAdminService extends FeaturesService {
+export interface FeaturesAdminService {
   setFlag(key: string, value: any): void;
   resetFlags(flags: FlagSet): void;
 }
