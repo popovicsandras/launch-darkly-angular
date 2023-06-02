@@ -8,7 +8,6 @@ import { LearningMaterialsComponent } from '../learning-materials/learning-mater
   imports: [CommonModule, FeaturesDirective, LearningMaterialsComponent],
   standalone: true,
   templateUrl: './nx-welcome.component.html',
-  styleUrls: ['./nx-welcome.component.scss'],
   encapsulation: ViewEncapsulation.None,
 })
 export class NxWelcomeComponent {}

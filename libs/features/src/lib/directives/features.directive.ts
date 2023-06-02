@@ -23,10 +23,7 @@ export class FeaturesDirective {
     private viewContainer: ViewContainerRef) {
       combineLatest([this.featuresService.getFlags$(), this.inputUpdate$])
         .pipe(takeUntilDestroyed())
-        .subscribe(([flags, features]: any) => {
-          console.log(flags, features)
-          this.updateView(flags, features);
-      });
+        .subscribe(([flags, features]: any) => this.updateView(flags, features));
   }
 
   private updateView(flags: FlagChangeset, features: string[]) {

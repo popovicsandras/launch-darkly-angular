@@ -17,7 +17,11 @@ export interface FlagSet {
 
 export interface FeaturesService {
   init(): Observable<FlagChangeset>;
-  isOn(key: string): boolean;
-  getAllFlags(): FlagSet;
+  isOn$(key: string): Observable<boolean>;
   getFlags$(): Observable<FlagChangeset>;
+}
+
+export interface FeaturesAdminService extends FeaturesService {
+  setFlag(key: string, value: any): void;
+  resetFlags(flags: FlagSet): void;
 }

@@ -1,6 +1,6 @@
 import { Inject, Injectable } from '@angular/core';
 import * as LDClient from 'launchdarkly-js-client-sdk';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { FeatureFlagConfigToken, FeaturesService, FlagChangeset, FlagSet } from './features.interface';
 
 export interface LDFeatureFlagConfig {
@@ -29,7 +29,7 @@ export class LDFeaturesService implements FeaturesService {
   }
 
   private setupChangeListener() {
-    const reactiveFlags: LDClient.LDFlagChangeset = Object.keys(this.getAllFlags()).reduce((acc, key) => {
+    const reactiveFlags: LDClient.LDFlagChangeset = Object.keys(this.client.allFlags()).reduce((acc, key) => {
       return {
         ...acc,
         [key]: {
@@ -48,12 +48,9 @@ export class LDFeaturesService implements FeaturesService {
     return reactiveFlags;
   }
 
-  isOn(key: string): boolean {
-    return this.client.variation(key, false);
-  }
-
-  getAllFlags(): FlagSet {
-    return this.client.allFlags();
+  isOn$(key: string): Observable<boolean> {
+    // TODO: implement
+    return of(false);
   }
 
   getFlags$(): Observable<FlagChangeset> {

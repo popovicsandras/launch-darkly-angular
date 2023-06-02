@@ -16,7 +16,10 @@
         "polyfills": ["zone.js"],
         "tsConfig": "apps/launch/tsconfig.app.json",
         "assets": ["apps/launch/src/favicon.ico", "apps/launch/src/assets"],
-        "styles": ["apps/launch/src/styles.scss"],
+        "styles": [
+          "node_modules/@angular/material/prebuilt-themes/indigo-pink.css",
+          "apps/launch/src/styles.scss"
+        ],
         "scripts": []
       },
       "configurations": {

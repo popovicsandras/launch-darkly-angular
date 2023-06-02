@@ -25,12 +25,8 @@ export class HxPFeaturesService implements FeaturesService {
     );
   }
 
-  isOn(key: string): boolean {
-    return this.flags[key].current;
-  }
-
-  getAllFlags(): FlagSet {
-    return this.flags;
+  isOn$(key: string): Observable<boolean> {
+    return of(this.flags[key].current);
   }
 
   getFlags$(): Observable<FlagChangeset> {
