@@ -1,4 +1,5 @@
 {
-  "show-banner": true,
-  "show-learning-materials": false
+  "show-banner": false,
+  "show-learning-materials": false,
+  "show-activity": false
 }

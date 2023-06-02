@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
-import { FeaturesService, FlagChangeset } from '../interfaces/features.interface';
+import { IFeaturesService, FlagChangeset } from '../interfaces/features.interface';
 
 @Injectable()
-export class DummyFeaturesService implements FeaturesService {
+export class DummyFeaturesService implements IFeaturesService {
   init(): Observable<FlagChangeset> {
     return of();
   }

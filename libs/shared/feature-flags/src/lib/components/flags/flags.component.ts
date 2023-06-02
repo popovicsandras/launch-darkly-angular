@@ -1,11 +1,7 @@
 import { Component, Inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import {
-  FeaturesServiceToken,
-  WritableFeaturesService,
-  FeaturesService,
-} from '../../interfaces/features.interface';
-import { Observable, map, tap } from 'rxjs';
+import { IWritableFeaturesService, IFeaturesService, FeaturesServiceToken, WritableFeaturesServiceToken, } from '../../interfaces/features.interface';
+import { Observable, map } from 'rxjs';
 import { MatTableModule } from '@angular/material/table';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 
@@ -21,7 +17,8 @@ export class FlagsComponent {
   displayedColumns: string[] = ['position', 'flag', 'value'];
 
   constructor(
-    @Inject(FeaturesServiceToken) private featuresService: FeaturesService & WritableFeaturesService
+    @Inject(FeaturesServiceToken) private featuresService: IFeaturesService,
+    @Inject(WritableFeaturesServiceToken) private writableFeaturesService: IWritableFeaturesService
   ) {
     this.flags$ = this.featuresService.getFlags$().pipe(
       map((flags) => {
@@ -32,14 +29,11 @@ export class FlagsComponent {
             value: flags[key].current,
           };
         });
-      }),
-      tap((flags) => {
-        console.log(flags);
       })
     );
   }
 
   protected change(flag: string, value: boolean) {
-    console.log(arguments);
+    this.writableFeaturesService.setFlag(flag, value);
   }
 }

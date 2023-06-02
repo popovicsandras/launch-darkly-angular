@@ -1,19 +1,20 @@
 import { APP_INITIALIZER, EnvironmentProviders, importProvidersFrom, makeEnvironmentProviders, } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
 import { HxPFeatureFlagConfig, HxPFeaturesService, } from '../services/hxp-features.service';
-import { FeatureFlagConfigToken, FeaturesService, FeaturesServiceToken, } from '@feature-flags';
+import { FeaturesServiceConfigToken, IFeaturesService, FeaturesServiceToken, OverriddableFeaturesServiceToken, } from '@feature-flags';
 
-export function provideHxPFeatures(
+export function provideFeaturesFlags(
   featureFlagServiceConfig: HxPFeatureFlagConfig
 ): EnvironmentProviders {
   return makeEnvironmentProviders([
     { provide: FeaturesServiceToken, useClass: HxPFeaturesService },
-    { provide: FeatureFlagConfigToken, useValue: featureFlagServiceConfig },
+    { provide: FeaturesServiceConfigToken, useValue: featureFlagServiceConfig },
+    { provide: OverriddableFeaturesServiceToken, useClass: HxPFeaturesService },
     {
       provide: APP_INITIALIZER,
-      useFactory: (featuresService: FeaturesService) => () =>
+      useFactory: (featuresService: IFeaturesService) => () =>
         featuresService.init(),
-      deps: [FeaturesServiceToken],
+      deps: [OverriddableFeaturesServiceToken],
       multi: true,
     },
     importProvidersFrom(HttpClientModule),

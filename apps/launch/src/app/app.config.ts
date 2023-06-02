@@ -1,8 +1,8 @@
 import { ApplicationConfig } from '@angular/core';
 import { provideRouter, withEnabledBlockingInitialNavigation, } from '@angular/router';
 import { appRoutes } from './app.routes';
-import { provideDummyFeatures, provideOverridableFeatures } from '@feature-flags';
-import { provideHxPFeatures, provideLaunchDarklyFeatures, } from '@features';
+import { provideDummyFeatureFlags, provideDebugFeatureFlags } from '@feature-flags';
+import { provideFeaturesFlags, provideLaunchDarklyFeatureFlags, } from '@features';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -11,18 +11,13 @@ export const appConfig: ApplicationConfig = {
     provideRouter(appRoutes),
 
     // It is supposed to be provided by ADF by default, but every app should reprovide it.
-    provideDummyFeatures(),
+    provideDummyFeatureFlags(),
 
     // Provided by every HxP application
-    provideHxPFeatures({ url: 'http://localhost:4200/assets/flags.json' }),
+    provideFeaturesFlags({ url: 'http://localhost:4200/assets/flags.json' }),
 
     // Provided by every HxP application in _NOT_ release configuration
-    provideOverridableFeatures({
-      storageKey: 'hxp-feature-flags',
-      defaultValues: {
-        'show-learning-materials': true,
-      }
-    }),
+    provideDebugFeatureFlags({storageKey: 'hxp-feature-flags'}),
 
     // Fallback option to communicate directly with LaunchDarkly
     // provideLaunchDarklyFeatures(

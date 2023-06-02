@@ -1,7 +1,7 @@
 import { Directive, Inject, Input, TemplateRef, ViewContainerRef, } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { BehaviorSubject, combineLatest } from 'rxjs';
-import { FeaturesService, FeaturesServiceToken, FlagChangeset, } from '../interfaces/features.interface';
+import { IFeaturesService, FeaturesServiceToken, FlagChangeset, } from '../interfaces/features.interface';
 
 @Directive({
   /* eslint-disable-next-line @angular-eslint/directive-selector */
@@ -18,7 +18,7 @@ export class FeaturesDirective {
   }
 
   constructor(
-    @Inject(FeaturesServiceToken) private featuresService: FeaturesService,
+    @Inject(FeaturesServiceToken) private featuresService: IFeaturesService,
     private templateRef: TemplateRef<any>,
     private viewContainer: ViewContainerRef
   ) {

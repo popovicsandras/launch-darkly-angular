@@ -1,7 +1,7 @@
 import { Inject, Injectable } from '@angular/core';
 import * as LDClient from 'launchdarkly-js-client-sdk';
 import { Observable, of } from 'rxjs';
-import { FeatureFlagConfigToken, FeaturesService, FlagChangeset, } from '@feature-flags';
+import { FeaturesServiceConfigToken, IFeaturesService, FlagChangeset, } from '@feature-flags';
 
 export interface LDFeatureFlagConfig {
   clientKey: string;
@@ -10,12 +10,12 @@ export interface LDFeatureFlagConfig {
 }
 
 @Injectable()
-export class LDFeaturesService implements FeaturesService {
+export class LDFeaturesService implements IFeaturesService {
   private client!: LDClient.LDClient;
   private change$!: Observable<FlagChangeset>;
 
   constructor(
-    @Inject(FeatureFlagConfigToken) private config: LDFeatureFlagConfig
+    @Inject(FeaturesServiceConfigToken) private config: LDFeatureFlagConfig
   ) {}
 
   init(): Observable<FlagChangeset> {

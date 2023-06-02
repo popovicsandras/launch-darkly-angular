@@ -2,8 +2,8 @@ import { Inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, of, tap } from 'rxjs';
 import {
-  FeatureFlagConfigToken,
-  FeaturesService,
+  FeaturesServiceConfigToken,
+  IFeaturesService,
   FlagChangeset,
 } from '@feature-flags';
 
@@ -12,11 +12,11 @@ export interface HxPFeatureFlagConfig {
 }
 
 @Injectable()
-export class HxPFeaturesService implements FeaturesService {
+export class HxPFeaturesService implements IFeaturesService {
   private flags!: FlagChangeset;
 
   constructor(
-    @Inject(FeatureFlagConfigToken) private config: HxPFeatureFlagConfig,
+    @Inject(FeaturesServiceConfigToken) private config: HxPFeatureFlagConfig,
     private httpClient: HttpClient
   ) {}
 

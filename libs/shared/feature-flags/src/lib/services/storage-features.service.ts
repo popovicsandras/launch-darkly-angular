@@ -1,28 +1,27 @@
-import { Inject, Injectable, InjectionToken, Optional } from '@angular/core';
+import { Inject, Injectable, Optional } from '@angular/core';
 import { BehaviorSubject, Observable, map, of, skip } from 'rxjs';
-import { FlagChangeset, FeaturesService, FlagSet, WritableFeaturesService, } from '../interfaces/features.interface';
+import { FlagChangeset, IFeaturesService, FlagSet, IWritableFeaturesService, WritableFeaturesServiceConfigToken } from '../interfaces/features.interface';
 import { StorageService } from './storage.service';
 
-export interface OverridableFeatureServiceConfig {
+export interface StorageFeaturesServiceConfig {
   defaultValues?: FlagSet;
   storageKey?: string;
 }
 
-export const OverridableFeaturesServiceToken = new InjectionToken<FeaturesService>( 'OverridableFeaturesServiceToken' );
-export const OverridableFeaturesServiceConfigToken = new InjectionToken<OverridableFeatureServiceConfig>( 'OverridableFeaturesServiceConfigToken' );
-
 @Injectable()
-export class OverridableFeaturesService implements FeaturesService, WritableFeaturesService {
+export class StorageFeaturesService implements IFeaturesService, IWritableFeaturesService {
+  private currentFlagState: FlagChangeset = {};
   private flags = new BehaviorSubject<FlagChangeset>({});
   private flags$ = this.flags.asObservable();
 
   constructor(
     private storageService: StorageService,
-    @Optional() @Inject(OverridableFeaturesServiceConfigToken) private config: OverridableFeatureServiceConfig
+    @Optional() @Inject(WritableFeaturesServiceConfigToken) private config: StorageFeaturesServiceConfig
   ) {
     this.flags
       .pipe(skip(1))
       .subscribe((flags) => {
+        this.currentFlagState = flags;
         const serializableFlags = Object.keys(flags).reduce((acc, key) => ({ ...acc, [key]: flags[key].current }), {});
         this.storageService.setItem(this.storageKey, JSON.stringify(serializableFlags));
       });
@@ -62,10 +61,32 @@ export class OverridableFeaturesService implements FeaturesService, WritableFeat
   }
 
   setFlag(key: string, value: any) {
-
+    this.flags.next({
+      ...this.currentFlagState,
+      [key]: { current: value, previous: this.currentFlagState[key]?.current ?? null },
+    });
   }
 
   resetFlags(flags: FlagSet) {
+    this.flags.next(
+      Object.keys(flags).reduce((acc, key) => {
+        return {
+          ...acc,
+          [key]: { current: flags[key], previous: null },
+        };
+      }, {})
+    );
+  }
 
+  resetToDefaults() {
+    this.flags.next(
+      Object.keys(this.config?.defaultValues || {}).reduce((acc, key) => {
+        const current = this.config.defaultValues![key];
+        return {
+          ...acc,
+          [key]: { current, previous: null },
+        };
+      }, {})
+    );
   }
 }
