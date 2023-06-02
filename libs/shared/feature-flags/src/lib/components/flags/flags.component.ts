@@ -2,7 +2,7 @@ import { Component, Inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {
   FeaturesServiceToken,
-  FeaturesAdminService,
+  WritableFeaturesService,
   FeaturesService,
 } from '../../interfaces/features.interface';
 import { Observable, map, tap } from 'rxjs';
@@ -21,7 +21,7 @@ export class FlagsComponent {
   displayedColumns: string[] = ['position', 'flag', 'value'];
 
   constructor(
-    @Inject(FeaturesServiceToken) private featuresService: FeaturesService & FeaturesAdminService
+    @Inject(FeaturesServiceToken) private featuresService: FeaturesService & WritableFeaturesService
   ) {
     this.flags$ = this.featuresService.getFlags$().pipe(
       map((flags) => {

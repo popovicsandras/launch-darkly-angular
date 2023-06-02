@@ -3,7 +3,7 @@ import { Observable, of } from 'rxjs';
 import { FeaturesService, FlagChangeset } from '../interfaces/features.interface';
 
 @Injectable()
-export class FakeFeaturesService implements FeaturesService {
+export class DummyFeaturesService implements FeaturesService {
   init(): Observable<FlagChangeset> {
     return of();
   }

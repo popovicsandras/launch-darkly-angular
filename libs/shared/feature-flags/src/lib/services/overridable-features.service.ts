@@ -1,24 +1,24 @@
 import { Inject, Injectable, InjectionToken, Optional } from '@angular/core';
 import { BehaviorSubject, Observable, map, of, skip } from 'rxjs';
-import { FlagChangeset, FeaturesService, FlagSet, FeaturesAdminService, } from '../interfaces/features.interface';
+import { FlagChangeset, FeaturesService, FlagSet, WritableFeaturesService, } from '../interfaces/features.interface';
 import { StorageService } from './storage.service';
 
-export interface BrowserFeatureFlagConfig {
-  defaultFlagNames?: FlagSet;
+export interface OverridableFeatureServiceConfig {
+  defaultValues?: FlagSet;
   storageKey?: string;
 }
 
-export const BrowserFeatureFlagConfigToken = new InjectionToken<BrowserFeatureFlagConfig>( 'BrowserFeatureFlagConfigToken' );
-export const BrowserFeaturesServiceToken = new InjectionToken<FeaturesService>( 'BrowserFeaturesServiceToken' );
+export const OverridableFeaturesServiceToken = new InjectionToken<FeaturesService>( 'OverridableFeaturesServiceToken' );
+export const OverridableFeaturesServiceConfigToken = new InjectionToken<OverridableFeatureServiceConfig>( 'OverridableFeaturesServiceConfigToken' );
 
 @Injectable()
-export class BrowserFeaturesService implements FeaturesService, FeaturesAdminService {
+export class OverridableFeaturesService implements FeaturesService, WritableFeaturesService {
   private flags = new BehaviorSubject<FlagChangeset>({});
   private flags$ = this.flags.asObservable();
 
   constructor(
     private storageService: StorageService,
-    @Optional() @Inject(BrowserFeatureFlagConfigToken) private config: BrowserFeatureFlagConfig
+    @Optional() @Inject(OverridableFeaturesServiceConfigToken) private config: OverridableFeatureServiceConfig
   ) {
     this.flags
       .pipe(skip(1))
@@ -33,7 +33,7 @@ export class BrowserFeaturesService implements FeaturesService, FeaturesAdminSer
   }
 
   init(): Observable<FlagChangeset> {
-    const defaultFlags: FlagSet = this.config?.defaultFlagNames || {};
+    const defaultFlags: FlagSet = this.config?.defaultValues || {};
     const storedFlags: FlagSet = JSON.parse(this.storageService.getItem(this.storageKey) || '{}');
     const flags = { ...defaultFlags, ...storedFlags };
 
