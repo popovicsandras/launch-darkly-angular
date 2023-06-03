@@ -1,16 +1,38 @@
-import { Inject, Injectable } from '@angular/core';
-import { BehaviorSubject, Observable, of, switchMap } from 'rxjs';
-import { IDebugFeaturesService, IFeaturesService, FlagChangeset, OverriddableFeaturesServiceToken, IWritableFeaturesService, WritableFeaturesServiceToken } from '../interfaces/features.interface';
+import { Inject, Injectable, Optional } from '@angular/core';
+import { BehaviorSubject, Observable, of, skip, switchMap } from 'rxjs';
+import {
+  IDebugFeaturesService,
+  IFeaturesService,
+  FlagChangeset,
+  OverriddableFeaturesServiceToken,
+  WritableFeaturesServiceToken,
+  WritableFeaturesServiceConfigToken,
+  WritableFeaturesServiceConfig
+} from '../interfaces/features.interface';
+import { StorageService } from './storage.service';
 
 @Injectable()
 export class DebugFeaturesService implements IDebugFeaturesService {
-  private isInDebugMode = new BehaviorSubject<boolean>(false);
-  private isInDebugMode$ = this.isInDebugMode.asObservable();
+  private isInDebugMode: BehaviorSubject<boolean>;
+  private isInDebugMode$: Observable<boolean>;
+
+  get storageKey(): string {
+    return `${this.config?.storageKey || 'feature-flags'}-override`;
+  }
 
   constructor(
     @Inject(OverriddableFeaturesServiceToken) private overriddenFeaturesService: IFeaturesService,
     @Inject(WritableFeaturesServiceToken) private writableFeaturesService: IFeaturesService,
-  ) {}
+    private storageService: StorageService,
+    @Optional() @Inject(WritableFeaturesServiceConfigToken) private config?: WritableFeaturesServiceConfig
+  ) {
+    this.isInDebugMode = new BehaviorSubject<boolean>(JSON.parse(this.storageService.getItem(this.storageKey) || 'false'));
+    this.isInDebugMode$ = this.isInDebugMode.asObservable();
+
+    this.isInDebugMode.pipe(skip(1)).subscribe((debugMode) => {
+      this.storageService.setItem(this.storageKey, JSON.stringify(debugMode));
+    });
+  }
 
   isOn$(key: string): Observable<boolean> {
     return this.isInDebugMode$.pipe(

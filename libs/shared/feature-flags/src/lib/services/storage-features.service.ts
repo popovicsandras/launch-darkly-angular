@@ -1,12 +1,8 @@
 import { Inject, Injectable, Optional } from '@angular/core';
 import { BehaviorSubject, Observable, map, of, skip } from 'rxjs';
-import { FlagChangeset, IFeaturesService, FlagSet, IWritableFeaturesService, WritableFeaturesServiceConfigToken, WritableFlagChangeset } from '../interfaces/features.interface';
+import { FlagChangeset, IFeaturesService, FlagSet, IWritableFeaturesService, WritableFeaturesServiceConfigToken, WritableFlagChangeset, WritableFeaturesServiceConfig } from '../interfaces/features.interface';
 import { StorageService } from './storage.service';
 import { FlagSetParser } from './flagset.parser';
-
-export interface StorageFeaturesServiceConfig {
-  storageKey?: string;
-}
 
 @Injectable()
 export class StorageFeaturesService implements IFeaturesService, IWritableFeaturesService
@@ -17,9 +13,7 @@ export class StorageFeaturesService implements IFeaturesService, IWritableFeatur
 
   constructor(
     private storageService: StorageService,
-    @Optional()
-    @Inject(WritableFeaturesServiceConfigToken)
-    private config?: StorageFeaturesServiceConfig
+    @Optional() @Inject(WritableFeaturesServiceConfigToken) private config?: WritableFeaturesServiceConfig
   ) {
     this.flags.pipe(skip(1)).subscribe((flags) => {
       this.currentFlagState = flags;

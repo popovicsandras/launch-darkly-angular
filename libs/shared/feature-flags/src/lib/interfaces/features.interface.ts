@@ -4,8 +4,10 @@ import { Observable } from 'rxjs';
 export const FeaturesServiceConfigToken = new InjectionToken<any>('FeatureServiceConfigToken');
 export const FeaturesServiceToken = new InjectionToken<IFeaturesService>('FeaturesService');
 export const WritableFeaturesServiceToken = new InjectionToken<IFeaturesService & IWritableFeaturesService>('WritableFeaturesServiceToken');
-export const WritableFeaturesServiceConfigToken = new InjectionToken<any>('WritableFeaturesServiceConfigToken');
+export const WritableFeaturesServiceConfigToken = new InjectionToken<WritableFeaturesServiceConfig>('WritableFeaturesServiceConfigToken');
 export const OverriddableFeaturesServiceToken = new InjectionToken<IFeaturesService>('OverriddableFeaturesServiceToken');
+
+export interface WritableFeaturesServiceConfig { storageKey?: string; }
 
 export interface FlagChangeset {
   [key: string]: {
