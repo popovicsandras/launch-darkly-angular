@@ -11,6 +11,26 @@
 }
 
 .feature-flags-overrides-table {
+
+  .flag-form-field {
+
+    width: 100%;
+    display: flex;
+
+    .mat-mdc-text-field-wrapper {
+      padding: 0;
+    }
+
+    .mdc-notched-outline,
+    .mat-mdc-form-field-subscript-wrapper {
+      display: none;
+    }
+
+    .flag-input {
+
+    }
+  }
+
   .no-col {
     width: 55px;
   }

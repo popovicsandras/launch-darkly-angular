@@ -1,5 +1,11 @@
 {
   "show-banner": false,
   "show-learning-materials": false,
-  "show-activity": false
+  "show-activity": false,
+  "new-data-table": true,
+  "process-removal": false,
+  "url-matchers": false,
+  "dynamic-extensions": true,
+  "new-content-models": false,
+  "hxp-file-viewer": true
 }
