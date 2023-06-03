@@ -1,36 +1,29 @@
 import { Inject, Injectable, Optional } from '@angular/core';
 import { BehaviorSubject, Observable, map, of, skip } from 'rxjs';
-import { FlagChangeset, IFeaturesService, FlagSet, IWritableFeaturesService, WritableFeaturesServiceConfigToken } from '../interfaces/features.interface';
+import { FlagChangeset, IFeaturesService, FlagSet, IWritableFeaturesService, WritableFeaturesServiceConfigToken, WritableFlagChangeset } from '../interfaces/features.interface';
 import { StorageService } from './storage.service';
+import { FlagSetParser } from './flagset.parser';
 
 export interface StorageFeaturesServiceConfig {
   storageKey?: string;
 }
 
 @Injectable()
-export class StorageFeaturesService
-  implements IFeaturesService, IWritableFeaturesService
+export class StorageFeaturesService implements IFeaturesService, IWritableFeaturesService
 {
-  private currentFlagState: FlagChangeset = {};
-  private flags = new BehaviorSubject<FlagChangeset>({});
+  private currentFlagState: WritableFlagChangeset = {};
+  private flags = new BehaviorSubject<WritableFlagChangeset>({});
   private flags$ = this.flags.asObservable();
 
   constructor(
     private storageService: StorageService,
     @Optional()
     @Inject(WritableFeaturesServiceConfigToken)
-    private config: StorageFeaturesServiceConfig
+    private config?: StorageFeaturesServiceConfig
   ) {
     this.flags.pipe(skip(1)).subscribe((flags) => {
       this.currentFlagState = flags;
-      const serializableFlags = Object.keys(flags).reduce(
-        (acc, key) => ({ ...acc, [key]: flags[key].current }),
-        {}
-      );
-      this.storageService.setItem(
-        this.storageKey,
-        JSON.stringify(serializableFlags)
-      );
+      this.storageService.setItem(this.storageKey, JSON.stringify(FlagSetParser.serialize(flags)));
     });
   }
 
@@ -38,49 +31,35 @@ export class StorageFeaturesService
     return this.config?.storageKey || 'feature-flags';
   }
 
-  init(): Observable<FlagChangeset> {
-    const storedFlags: FlagSet = JSON.parse(
-      this.storageService.getItem(this.storageKey) || '{}'
-    );
-
-    const initialFlagChangeSet: FlagChangeset = Object.keys(storedFlags).reduce(
-      (acc, key) => {
-        return {
-          ...acc,
-          [key]: { current: storedFlags[key], previous: null },
-        };
-      },
-      {}
-    );
-
+  init(): Observable<WritableFlagChangeset> {
+    const storedFlags = JSON.parse(this.storageService.getItem(this.storageKey) || '{}');
+    const initialFlagChangeSet = FlagSetParser.deserialize(storedFlags);
     this.flags.next(initialFlagChangeSet);
-
     return of(initialFlagChangeSet);
   }
 
   isOn$(key: string): Observable<boolean> {
     return this.flags$.pipe(
-      map((flags) => {
-        return !!flags[key]?.current;
-      })
+      map(flags => !!flags[key]?.current)
     );
   }
 
-  getFlags$(): Observable<FlagChangeset> {
+  getFlags$(): Observable<WritableFlagChangeset> {
     return this.flags$;
   }
 
-  setFlag(key: string, value: any) {
+  setFlag(key: string, value: any): void {
     this.flags.next({
       ...this.currentFlagState,
       [key]: {
         current: value,
         previous: this.currentFlagState[key]?.current ?? null,
+        ...(this.currentFlagState[key]?.fictive ? { fictive: true } : {}),
       },
     });
   }
 
-  resetFlags(flags: FlagSet) {
+  resetFlags(flags: FlagSet):void {
     this.flags.next(
       Object.keys(flags).reduce((acc, key) => {
         return {
@@ -91,8 +70,8 @@ export class StorageFeaturesService
     );
   }
 
-  mergeFlags(flags: FlagChangeset) {
-    const mergedFlags: FlagChangeset = Object.keys(flags).reduce((acc, key) => {
+  mergeFlags(flags: FlagChangeset): void {
+    const mergedFlags: WritableFlagChangeset = Object.keys(flags).reduce((acc, key) => {
       const current = this.currentFlagState[key]?.current;
       return {
         ...acc,
@@ -109,6 +88,7 @@ export class StorageFeaturesService
         mergedFlags[key] = {
           current: this.currentFlagState[key].current,
           previous: this.currentFlagState[key].previous,
+          fictive: true,
         };
       });
 

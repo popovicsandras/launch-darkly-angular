@@ -14,19 +14,22 @@ export interface FlagChangeset {
   };
 }
 
+export interface WritableFlagChangeset {
+  [key: string]: {
+    current: any;
+    previous: any;
+    fictive?: boolean;
+  };
+}
+
 export interface FlagSet {
   [key: string]: any;
 }
 
-export interface IFeaturesService {
-  init(): Observable<FlagChangeset>;
+export interface IFeaturesService<T = FlagChangeset> {
+  init(): Observable<T>;
   isOn$(key: string): Observable<boolean>;
-  getFlags$(): Observable<FlagChangeset>;
-}
-
-export interface IDebugFeaturesService extends Omit<IFeaturesService, 'init'> {
-  enable(on: boolean): void;
-  isEnabled(): Observable<boolean>;
+  getFlags$(): Observable<T>;
 }
 
 export interface IWritableFeaturesService {
@@ -34,3 +37,9 @@ export interface IWritableFeaturesService {
   resetFlags(flags: FlagSet): void;
   mergeFlags(flags: FlagChangeset): void;
 }
+
+export interface IDebugFeaturesService {
+  enable(on: boolean): void;
+  isEnabled(): Observable<boolean>;
+}
+
