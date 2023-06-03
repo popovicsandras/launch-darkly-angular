@@ -1,7 +1,7 @@
-import { Component, Inject, ViewEncapsulation } from '@angular/core';
+import { Component, Inject, OnDestroy, ViewEncapsulation } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { IWritableFeaturesService, FeaturesServiceToken, WritableFeaturesServiceToken, IDebugFeaturesService, FlagChangeset, WritableFlagChangeset, IFeaturesService, } from '../../interfaces/features.interface';
-import { BehaviorSubject, Observable, combineLatest, debounceTime, map, take, tap } from 'rxjs';
+import { BehaviorSubject, Observable, Subject, combineLatest, debounceTime, map, take, takeUntil, tap } from 'rxjs';
 import { MatTableModule } from '@angular/material/table';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatToolbarModule } from '@angular/material/toolbar';
@@ -27,10 +27,11 @@ import { FormsModule } from '@angular/forms';
   styleUrls: ['./flags.component.scss'],
   encapsulation: ViewEncapsulation.None
 })
-export class FlagsComponent {
+export class FlagsComponent implements OnDestroy {
+  displayedColumns: string[] = ['icon', 'flag', 'value'];
   flags$: Observable<{ fictive: boolean; flag: string; value: any }[]>;
-  isEnabled$: Observable<boolean>;
-  displayedColumns: string[] = ['position', 'flag', 'value'];
+  isEnabled = false;
+  destroy$ = new Subject<void>();
 
   inputValue = '';
   inputValue$ = new BehaviorSubject<string>('');
@@ -39,7 +40,9 @@ export class FlagsComponent {
     @Inject(FeaturesServiceToken) private featuresService: IDebugFeaturesService & IFeaturesService<WritableFlagChangeset>,
     @Inject(WritableFeaturesServiceToken) private writableFeaturesService: IWritableFeaturesService
   ) {
-    this.isEnabled$ = this.featuresService.isEnabled();
+    this.featuresService.isEnabled().pipe(takeUntil(this.destroy$)).subscribe((isEnabled) => {
+      this.isEnabled = isEnabled;
+    });
 
     const flags$ = this.featuresService.getFlags$().pipe(
       map((flags) => {
@@ -85,6 +88,11 @@ export class FlagsComponent {
   protected onClearInput() {
     this.inputValue = '';
     this.inputValue$.next('');
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   private getRealFlagsSnapshot() {

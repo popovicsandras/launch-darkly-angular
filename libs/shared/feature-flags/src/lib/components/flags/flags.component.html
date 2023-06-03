@@ -1,6 +1,6 @@
 <mat-toolbar class="feature-flags-overrides-header">
   <div>
-    <span class="activity-indicator" *ngIf="isEnabled$ | async; else inActive">🟢</span>
+    <span class="activity-indicator" *ngIf="isEnabled; else inActive">🟢</span>
     <ng-template #inActive>
       <span class="activity-indicator">🔴</span>
     </ng-template>
@@ -8,14 +8,14 @@
   </div>
   <mat-slide-toggle
     color="warning"
-    [checked]="isEnabled$ | async"
+    [checked]="isEnabled"
     (change)="onEnable($event.checked)">
   </mat-slide-toggle>
 </mat-toolbar>
 
 <ng-container *ngIf="flags$ | async as flags">
   <table mat-table [dataSource]="flags" class="feature-flags-overrides-table mat-elevation-z8">
-    <ng-container matColumnDef="position">
+    <ng-container matColumnDef="icon">
       <th mat-header-cell class="no-col" *matHeaderCellDef>
         <mat-icon class="material-icons-outlined" fontIcon="search"></mat-icon>
       </th>
@@ -48,7 +48,8 @@
       <td mat-cell class="val-col" *matCellDef="let element">
         <mat-slide-toggle
           [checked]="element.value"
-          (change)="onChange(element.flag, $event.checked)">
+          (change)="onChange(element.flag, $event.checked)"
+          [disabled]="!isEnabled">
         </mat-slide-toggle>
       </td>
     </ng-container>
