@@ -1,0 +1,22 @@
+.feature-flags-overrides-header {
+  display: flex;
+  justify-content: space-between;
+
+  .activity-indicator {
+    margin-right: 12px;
+    font-size: 12px;
+    position: relative;
+    top: -2px;
+  }
+}
+
+.feature-flags-overrides-table {
+  .no-col {
+    width: 55px;
+  }
+
+  .val-col {
+    width: 85px;
+    text-align: center;
+  }
+}

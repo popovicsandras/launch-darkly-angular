@@ -1,24 +1,37 @@
+<mat-toolbar class="feature-flags-overrides-header">
+  <div>
+    <span class="activity-indicator" *ngIf="isEnabled$ | async; else inActive">🟢</span>
+    <ng-template #inActive>
+      <span class="activity-indicator">🔴</span>
+    </ng-template>
+    <span>Override feature flags</span>
+  </div>
+  <mat-slide-toggle
+    color="warning"
+    [checked]="isEnabled$ | async"
+    (change)="onEnable($event.checked)">
+  </mat-slide-toggle>
+</mat-toolbar>
+
 <ng-container *ngIf="flags$ | async as flags">
-  <table mat-table [dataSource]="flags" class="mat-elevation-z8">
+  <table mat-table [dataSource]="flags" class="feature-flags-overrides-table mat-elevation-z8">
     <ng-container matColumnDef="position">
-      <th mat-header-cell *matHeaderCellDef>No.</th>
+      <th mat-header-cell class="no-col" *matHeaderCellDef>No.</th>
       <td mat-cell *matCellDef="let element">{{ element.position }}</td>
     </ng-container>
 
-    <!-- Name Column -->
     <ng-container matColumnDef="flag">
-      <th mat-header-cell *matHeaderCellDef>Flag</th>
+      <th mat-header-cell class="flag-col" *matHeaderCellDef>Flag</th>
       <td mat-cell *matCellDef="let element">{{ element.flag }}</td>
     </ng-container>
 
-    <!-- Weight Column -->
     <ng-container matColumnDef="value">
-      <th mat-header-cell *matHeaderCellDef>Enabled</th>
-      <td mat-cell *matCellDef="let element">
+      <th mat-header-cell class="val-col" *matHeaderCellDef>Enabled</th>
+      <td mat-cell class="val-col" *matCellDef="let element">
         <mat-slide-toggle
           [checked]="element.value"
-          (change)="change(element.flag, $event.checked)"
-        ></mat-slide-toggle>
+          (change)="onChange(element.flag, $event.checked)">
+        </mat-slide-toggle>
       </td>
     </ng-container>
 

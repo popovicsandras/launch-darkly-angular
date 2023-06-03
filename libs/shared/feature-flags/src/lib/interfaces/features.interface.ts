@@ -32,5 +32,5 @@ export interface IDebugFeaturesService extends Omit<IFeaturesService, 'init'> {
 export interface IWritableFeaturesService {
   setFlag(key: string, value: any): void;
   resetFlags(flags: FlagSet): void;
-  resetToDefaults(): void;
+  mergeFlags(flags: FlagChangeset): void;
 }

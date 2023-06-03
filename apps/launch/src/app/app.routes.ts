@@ -2,7 +2,8 @@ import { Route } from '@angular/router';
 import { NxWelcomeComponent } from './components/nx-welcome/nx-welcome.component';
 import { LearningMaterialsComponent } from './components/learning-materials/learning-materials.component';
 import { inject } from '@angular/core';
-import { FeaturesServiceToken, FlagsComponent } from '@feature-flags';
+import { FeaturesServiceToken } from '@feature-flags';
+import { FeatureFlagsWrapperComponent } from './components/feature-flags-wrapper';
 
 export const appRoutes: Route[] = [
   {
@@ -19,6 +20,6 @@ export const appRoutes: Route[] = [
   },
   {
     path: 'flags',
-    component: FlagsComponent,
+    component: FeatureFlagsWrapperComponent,
   },
 ];
