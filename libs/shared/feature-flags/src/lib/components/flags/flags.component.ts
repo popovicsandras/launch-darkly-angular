@@ -1,7 +1,7 @@
 import { Component, Inject, OnDestroy, ViewEncapsulation } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { IWritableFeaturesService, FeaturesServiceToken, WritableFeaturesServiceToken, IDebugFeaturesService, FlagChangeset, WritableFlagChangeset, IFeaturesService, } from '../../interfaces/features.interface';
-import { BehaviorSubject, Observable, Subject, combineLatest, debounceTime, map, take, takeUntil, tap } from 'rxjs';
+import { IWritableFeaturesService, FeaturesServiceToken, WritableFeaturesServiceToken, IDebugFeaturesService, FlagChangeset, WritableFlagChangeset, IFeaturesService } from '../../interfaces/features.interface';
+import { BehaviorSubject, Observable, Subject, combineLatest, debounceTime, map, take, takeUntil } from 'rxjs';
 import { MatTableModule } from '@angular/material/table';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatToolbarModule } from '@angular/material/toolbar';
@@ -13,16 +13,7 @@ import { FormsModule } from '@angular/forms';
 @Component({
   selector: 'feature-flags-overrides',
   standalone: true,
-  imports: [
-    CommonModule,
-    FormsModule,
-    MatTableModule,
-    MatSlideToggleModule,
-    MatToolbarModule,
-    MatIconModule,
-    MatButtonModule,
-    MatInputModule
-  ],
+  imports: [ CommonModule, FormsModule, MatTableModule, MatSlideToggleModule, MatToolbarModule, MatIconModule, MatButtonModule, MatInputModule ],
   templateUrl: './flags.component.html',
   styleUrls: ['./flags.component.scss'],
   encapsulation: ViewEncapsulation.None
@@ -35,6 +26,7 @@ export class FlagsComponent implements OnDestroy {
 
   inputValue = '';
   inputValue$ = new BehaviorSubject<string>('');
+  showPlusButton$!: Observable<boolean>;
 
   constructor(
     @Inject(FeaturesServiceToken) private featuresService: IDebugFeaturesService & IFeaturesService<WritableFlagChangeset>,
@@ -65,6 +57,12 @@ export class FlagsComponent implements OnDestroy {
         }
 
         return flags.filter((flag) => flag.flag.includes(inputValue));
+      })
+    );
+
+    this.showPlusButton$ = this.flags$.pipe(
+      map((flags) => {
+        return this.isEnabled && flags.length === 0;
       }
     ));
   }
