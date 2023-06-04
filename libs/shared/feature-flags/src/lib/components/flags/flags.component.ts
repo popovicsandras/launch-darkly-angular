@@ -1,4 +1,4 @@
-import { Component, Inject, OnDestroy, ViewEncapsulation } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Inject, OnDestroy, ViewEncapsulation } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { IWritableFeaturesService, FeaturesServiceToken, WritableFeaturesServiceToken, IDebugFeaturesService, FlagChangeset, WritableFlagChangeset, IFeaturesService } from '../../interfaces/features.interface';
 import { BehaviorSubject, Observable, Subject, combineLatest, debounceTime, map, take, takeUntil } from 'rxjs';
@@ -17,7 +17,8 @@ import { MatTooltipModule } from '@angular/material/tooltip';
   imports: [ CommonModule, FormsModule, MatTableModule, MatSlideToggleModule, MatToolbarModule, MatIconModule, MatButtonModule, MatInputModule, MatTooltipModule ],
   templateUrl: './flags.component.html',
   styleUrls: ['./flags.component.scss'],
-  encapsulation: ViewEncapsulation.None
+  encapsulation: ViewEncapsulation.None,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class FlagsComponent implements OnDestroy {
   displayedColumns: string[] = ['icon', 'flag', 'value'];
@@ -99,6 +100,10 @@ export class FlagsComponent implements OnDestroy {
 
   protected onAddButtonClick() {
     this.writableFeaturesService.setFlag(this.inputValue, false);
+  }
+
+  protected onDelete(flag: string) {
+    this.writableFeaturesService.removeFlag(flag);
   }
 
   ngOnDestroy(): void {

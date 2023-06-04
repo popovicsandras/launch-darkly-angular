@@ -27,8 +27,31 @@
     }
   }
 
-  .no-col {
-    width: 55px;
+  .fictive-flag-button {
+    margin-left: -12px;
+    margin-right: -12px;
+
+    .custom-flag-icon {
+      display: block;
+    }
+
+    .trash-icon {
+      display: none;
+    }
+
+    &:hover {
+      .custom-flag-icon {
+        display: none;
+      }
+
+      .trash-icon {
+        display: block;
+      }
+    }
+  }
+
+  .icon-col {
+    width: 56px;
   }
 
   .val-col {

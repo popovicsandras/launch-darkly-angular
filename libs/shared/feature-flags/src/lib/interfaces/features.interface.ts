@@ -41,6 +41,7 @@ export interface IFeaturesService<T = FlagChangeset> {
 export interface IWritableFeaturesService {
   setFlag(key: string, value: any): void;
   resetFlags(flags: FlagSet): void;
+  removeFlag(key: string): void;
   mergeFlags(flags: FlagChangeset): void;
 }
 

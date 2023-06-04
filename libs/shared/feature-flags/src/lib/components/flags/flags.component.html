@@ -4,7 +4,7 @@
     <ng-template #inActive>
       <span class="activity-indicator">🔴</span>
     </ng-template>
-    <span>Override feature flags</span>
+    <span>Feature flags overrides</span>
   </div>
   <mat-slide-toggle color="warning" [checked]="isEnabled" (change)="onEnable($event.checked)">
   </mat-slide-toggle>
@@ -13,14 +13,14 @@
 <ng-container *ngIf="flags$ | async as flags">
   <table mat-table [dataSource]="flags" class="feature-flags-overrides-table mat-elevation-z8">
     <ng-container matColumnDef="icon">
-      <th mat-header-cell class="no-col" *matHeaderCellDef>
+      <th mat-header-cell class="icon-col" *matHeaderCellDef>
         <mat-icon class="material-icons-outlined" fontIcon="search"></mat-icon>
       </th>
-      <td mat-cell *matCellDef="let element">
-        <mat-icon *ngIf="element.fictive; else flagFromApi" class="material-icons-outlined" fontIcon="memory"></mat-icon>
-        <ng-template #flagFromApi>
-          <mat-icon class="material-icons-outlined" fontIcon="cloud"></mat-icon>
-        </ng-template>
+      <td mat-cell class="icon-col" *matCellDef="let element">
+        <button mat-icon-button *ngIf="element.fictive; else flagFromApi" class="fictive-flag-button" (click)="onDelete(element.flag)">
+          <mat-icon class="material-icons-outlined custom-flag-icon" fontIcon="memory"></mat-icon>
+          <mat-icon class="material-icons-outlined trash-icon" fontIcon="delete"></mat-icon>
+        </button>
       </td>
     </ng-container>
 
@@ -30,7 +30,7 @@
           <input class="flag-input" placeholder="Filter or add new" matInput type="text" [(ngModel)]="inputValue" (keyup)="onInputChange(inputValue)" (keypress)="onAdd($event)">
         </mat-form-field>
       </th>
-      <td mat-cell *matCellDef="let element">{{ element.flag }}</td>
+      <td mat-cell class="flag-col" *matCellDef="let element">{{ element.flag }}</td>
     </ng-container>
 
     <ng-container matColumnDef="value">
@@ -57,3 +57,8 @@
     <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
   </table>
 </ng-container>
+
+<ng-template #flagFromApi>
+  <mat-icon class="material-icons-outlined" fontIcon="cloud"></mat-icon>
+</ng-template>
+

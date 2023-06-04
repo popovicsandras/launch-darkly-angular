@@ -60,6 +60,11 @@ export class StorageFeaturesService implements IFeaturesService, IWritableFeatur
     });
   }
 
+  removeFlag(key: string): void {
+    const { [key]: _, ...flags } = this.currentFlagState;
+    this.flags.next(flags);
+  }
+
   resetFlags(flags: FlagSet): void {
     this.flags.next(
       Object.keys(flags).reduce((acc, key) => {
