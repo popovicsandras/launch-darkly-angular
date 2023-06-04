@@ -1,9 +1,8 @@
 import { Route } from '@angular/router';
 import { NxWelcomeComponent } from './components/nx-welcome/nx-welcome.component';
 import { LearningMaterialsComponent } from './components/learning-materials/learning-materials.component';
-import { inject } from '@angular/core';
-import { FeaturesServiceToken } from '@feature-flags';
 import { FeatureFlagsWrapperComponent } from './components/feature-flags-wrapper';
+import { isFeatureOn, isFeatureOnNg14 } from '@feature-flags';
 
 export const appRoutes: Route[] = [
   {
@@ -14,9 +13,13 @@ export const appRoutes: Route[] = [
   {
     path: 'learning',
     component: LearningMaterialsComponent,
-    canMatch: [
-      () => inject(FeaturesServiceToken).isOn$('show-learning-materials'),
-    ],
+    canMatch: [ isFeatureOn('show-learning-materials') ],
+  },
+  {
+    path: 'activity',
+    component: LearningMaterialsComponent,
+    canMatch: [ isFeatureOnNg14 ],
+    data: { feature: 'show-activity' }
   },
   {
     path: 'flags',

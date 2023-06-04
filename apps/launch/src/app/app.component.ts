@@ -50,6 +50,11 @@ export class AppComponent {
       label: 'Learning',
       feature: 'show-learning-materials',
     },
+    {
+      path: '/activity',
+      label: 'Activity',
+      feature: 'show-activity',
+    },
     { path: '/flags', label: 'Flags' },
   ];
   title = 'launch';

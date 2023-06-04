@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, Inject, OnDestroy, ViewEncapsulation } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { IWritableFeaturesService, FeaturesServiceToken, WritableFeaturesServiceToken, IDebugFeaturesService, FlagChangeset, WritableFlagChangeset, IFeaturesService } from '../../interfaces/features.interface';
+import { IWritableFeaturesService, FeaturesServiceToken, WritableFeaturesServiceToken, IDebugFeaturesService, FlagChangeset, WritableFlagChangeset, IFeaturesService } from '../interfaces/features.interface';
 import { BehaviorSubject, Observable, Subject, combineLatest, debounceTime, map, take, takeUntil } from 'rxjs';
 import { MatTableModule } from '@angular/material/table';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
@@ -16,7 +16,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
   standalone: true,
   imports: [ CommonModule, FormsModule, MatTableModule, MatSlideToggleModule, MatToolbarModule, MatIconModule, MatButtonModule, MatInputModule, MatTooltipModule ],
   templateUrl: './flags.component.html',
-  styleUrls: ['./flags.component.scss'],
+  styleUrls: ['./flags.component.ng16.scss'],
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush
 })
