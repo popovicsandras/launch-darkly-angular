@@ -43,12 +43,19 @@ export class StorageFeaturesService implements IFeaturesService, IWritableFeatur
   }
 
   setFlag(key: string, value: any): void {
+    let fictive = {};
+    if (!this.currentFlagState[key]) {
+      fictive = { fictive: true };
+    } else {
+      fictive = this.currentFlagState[key]?.fictive ? { fictive: true } : {};
+    }
+
     this.flags.next({
       ...this.currentFlagState,
       [key]: {
         current: value,
         previous: this.currentFlagState[key]?.current ?? null,
-        ...(this.currentFlagState[key]?.fictive ? { fictive: true } : {}),
+        ...fictive,
       },
     });
   }

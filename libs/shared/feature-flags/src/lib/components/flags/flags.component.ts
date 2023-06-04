@@ -9,11 +9,12 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
 import { FormsModule } from '@angular/forms';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 @Component({
   selector: 'feature-flags-overrides',
   standalone: true,
-  imports: [ CommonModule, FormsModule, MatTableModule, MatSlideToggleModule, MatToolbarModule, MatIconModule, MatButtonModule, MatInputModule ],
+  imports: [ CommonModule, FormsModule, MatTableModule, MatSlideToggleModule, MatToolbarModule, MatIconModule, MatButtonModule, MatInputModule, MatTooltipModule ],
   templateUrl: './flags.component.html',
   styleUrls: ['./flags.component.scss'],
   encapsulation: ViewEncapsulation.None
@@ -86,6 +87,18 @@ export class FlagsComponent implements OnDestroy {
   protected onClearInput() {
     this.inputValue = '';
     this.inputValue$.next('');
+  }
+
+  protected onAdd(event: KeyboardEvent) {
+    this.showPlusButton$.pipe(take(1)).subscribe((showPlusButton) => {
+      if (showPlusButton && event.key === 'Enter' && event.shiftKey) {
+        this.writableFeaturesService.setFlag(this.inputValue, false);
+      }
+    });
+  }
+
+  protected onAddButtonClick() {
+    this.writableFeaturesService.setFlag(this.inputValue, false);
   }
 
   ngOnDestroy(): void {

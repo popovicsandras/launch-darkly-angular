@@ -6,10 +6,7 @@
     </ng-template>
     <span>Override feature flags</span>
   </div>
-  <mat-slide-toggle
-    color="warning"
-    [checked]="isEnabled"
-    (change)="onEnable($event.checked)">
+  <mat-slide-toggle color="warning" [checked]="isEnabled" (change)="onEnable($event.checked)">
   </mat-slide-toggle>
 </mat-toolbar>
 
@@ -30,7 +27,7 @@
     <ng-container matColumnDef="flag">
       <th mat-header-cell class="flag-col" *matHeaderCellDef>
         <mat-form-field class="flag-form-field" appearance="outline" floatLabel="auto">
-          <input class="flag-input" placeholder="Filter or add new" matInput type="text" [(ngModel)]="inputValue" (keyup)="onInputChange(inputValue)">
+          <input class="flag-input" placeholder="Filter or add new" matInput type="text" [(ngModel)]="inputValue" (keyup)="onInputChange(inputValue)" (keypress)="onAdd($event)">
         </mat-form-field>
       </th>
       <td mat-cell *matCellDef="let element">{{ element.flag }}</td>
@@ -39,7 +36,7 @@
     <ng-container matColumnDef="value">
       <th mat-header-cell class="val-col" *matHeaderCellDef>
         <div style="display: flex; justify-content: end;">
-          <button *ngIf="showPlusButton$ | async" mat-icon-button color="accent">
+          <button *ngIf="showPlusButton$ | async" mat-icon-button matTooltip="Add new feature flag (Shift + Enter)" color="accent" (click)="onAddButtonClick()">
             <mat-icon class="material-icons-outlined" fontIcon="add_circle"></mat-icon>
           </button>
           <button *ngIf="inputValue" matSuffix mat-icon-button aria-label="Clear" (click)="onClearInput()" style="margin-left: -20px;">
