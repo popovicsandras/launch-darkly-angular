@@ -23,11 +23,7 @@ export class QaFeaturesHelper {
   }
 
   getFlags(): FlagChangeset {
-    let flags: FlagChangeset = {};
-    this.debugFeaturesService.getFlags$().subscribe((flagChangeset) => {
-      flags = flagChangeset;
-    });
-    return flags;
+    return this.debugFeaturesService.getFlagsSnapshot();
   }
 
   resetFlags(flags: FlagSet): void {

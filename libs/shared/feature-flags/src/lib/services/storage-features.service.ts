@@ -42,6 +42,10 @@ export class StorageFeaturesService implements IFeaturesService, IWritableFeatur
     return this.flags$;
   }
 
+  getFlagsSnapshot(): FlagChangeset {
+    return this.currentFlagState;
+  }
+
   setFlag(key: string, value: any): void {
     let fictive = {};
     if (!this.currentFlagState[key]) {

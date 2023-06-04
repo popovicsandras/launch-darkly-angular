@@ -37,4 +37,8 @@ export class HxPFeaturesService implements IFeaturesService {
   getFlags$(): Observable<FlagChangeset> {
     return of(this.flags);
   }
+
+  getFlagsSnapshot(): FlagChangeset {
+    return this.flags;
+  }
 }

@@ -75,7 +75,7 @@ export class FlagsComponent implements OnDestroy {
 
   protected onEnable(value: boolean) {
     if (value) {
-      this.writableFeaturesService.mergeFlags(this.getRealFlagsSnapshot());
+      this.writableFeaturesService.mergeFlags(this.featuresService.getFlagsSnapshot());
     }
 
     this.featuresService.enable(value);
@@ -109,16 +109,5 @@ export class FlagsComponent implements OnDestroy {
   ngOnDestroy(): void {
     this.destroy$.next();
     this.destroy$.complete();
-  }
-
-  private getRealFlagsSnapshot() {
-    let flagsSnapshot!: FlagChangeset;
-    this.featuresService.getFlags$()
-      .pipe(take(1))
-      .subscribe((flags) => {
-        flagsSnapshot = flags;
-      });
-
-    return flagsSnapshot;
   }
 }

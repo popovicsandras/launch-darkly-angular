@@ -38,6 +38,10 @@ export class DebugFeaturesService implements IDebugFeaturesService {
     )
   }
 
+  getFlagsSnapshot(): FlagChangeset {
+    return this.isInDebugMode.getValue() ? this.writableFeaturesService.getFlagsSnapshot() : this.overriddenFeaturesService.getFlagsSnapshot();
+  }
+
   resetFlags(flags: FlagSet): void {
     this.writableFeaturesService.resetFlags(flags);
   }

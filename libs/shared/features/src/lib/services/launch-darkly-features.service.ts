@@ -9,6 +9,7 @@ export interface LDFeatureFlagConfig {
   options?: LDClient.LDOptions;
 }
 
+/** @experimental */
 @Injectable()
 export class LDFeaturesService implements IFeaturesService {
   private client!: LDClient.LDClient;
@@ -62,5 +63,9 @@ export class LDFeaturesService implements IFeaturesService {
 
   getFlags$(): Observable<FlagChangeset> {
     return this.change$;
+  }
+
+  getFlagsSnapshot(): FlagChangeset {
+    return {};
   }
 }

@@ -36,6 +36,7 @@ export interface IFeaturesService<T = FlagChangeset> {
   init(): Observable<T>;
   isOn$(key: string): Observable<boolean>;
   getFlags$(): Observable<T>;
+  getFlagsSnapshot(): T;
 }
 
 export interface IWritableFeaturesService {
