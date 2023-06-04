@@ -3,14 +3,14 @@ import { provideRouter, withEnabledBlockingInitialNavigation, } from '@angular/r
 import { appRoutes } from './app.routes';
 import { provideDummyFeatureFlags, provideDebugFeatureFlags } from '@feature-flags';
 import { provideFeaturesFlags, provideLaunchDarklyFeatureFlags, } from '@features';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { provideAnimations } from '@angular/platform-browser/animations';
 
 export const appConfig: ApplicationConfig = {
   providers: [
     // For functional router guars, withEnabledBlockingInitialNavigation can not be used, since routing happens before the features are loaded.
     // provideRouter(appRoutes, withEnabledBlockingInitialNavigation()),
     provideRouter(appRoutes),
-    // importProvidersFrom(BrowserAnimationsModule),
+    provideAnimations(),
 
     // It is supposed to be provided by ADF by default, but every app should reprovide it.
     provideDummyFeatureFlags(),
