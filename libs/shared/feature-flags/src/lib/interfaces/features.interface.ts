@@ -8,6 +8,10 @@ export const WritableFeaturesServiceConfigToken = new InjectionToken<WritableFea
 export const OverriddableFeaturesServiceToken = new InjectionToken<IFeaturesService>('OverriddableFeaturesServiceToken');
 
 export interface WritableFeaturesServiceConfig { storageKey?: string; }
+export interface QaFeaturesHelperConfig {
+  helperExposeKeyOnDocument?: string;
+  rootComponentDOMSelector?: () => HTMLElement;
+}
 
 export interface FlagChangeset {
   [key: string]: {
@@ -40,8 +44,9 @@ export interface IWritableFeaturesService {
   mergeFlags(flags: FlagChangeset): void;
 }
 
-export interface IDebugFeaturesService {
+export type IDebugFeaturesService = Omit<IFeaturesService<WritableFlagChangeset>, 'init'> & {
   enable(on: boolean): void;
   isEnabled(): Observable<boolean>;
+  resetFlags(flags: FlagSet): void;
 }
 

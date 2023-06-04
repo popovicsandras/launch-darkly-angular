@@ -1,14 +1,6 @@
 import { Inject, Injectable, Optional } from '@angular/core';
-import { BehaviorSubject, Observable, of, skip, switchMap } from 'rxjs';
-import {
-  IDebugFeaturesService,
-  IFeaturesService,
-  FlagChangeset,
-  OverriddableFeaturesServiceToken,
-  WritableFeaturesServiceToken,
-  WritableFeaturesServiceConfigToken,
-  WritableFeaturesServiceConfig
-} from '../interfaces/features.interface';
+import { BehaviorSubject, Observable, skip, switchMap } from 'rxjs';
+import { IDebugFeaturesService, IFeaturesService, FlagChangeset, OverriddableFeaturesServiceToken, WritableFeaturesServiceToken, WritableFeaturesServiceConfigToken, WritableFeaturesServiceConfig, FlagSet, IWritableFeaturesService } from '../interfaces/features.interface';
 import { StorageService } from './storage.service';
 
 @Injectable()
@@ -22,7 +14,7 @@ export class DebugFeaturesService implements IDebugFeaturesService {
 
   constructor(
     @Inject(OverriddableFeaturesServiceToken) private overriddenFeaturesService: IFeaturesService,
-    @Inject(WritableFeaturesServiceToken) private writableFeaturesService: IFeaturesService,
+    @Inject(WritableFeaturesServiceToken) private writableFeaturesService: IFeaturesService & IWritableFeaturesService,
     private storageService: StorageService,
     @Optional() @Inject(WritableFeaturesServiceConfigToken) private config?: WritableFeaturesServiceConfig
   ) {
@@ -44,6 +36,10 @@ export class DebugFeaturesService implements IDebugFeaturesService {
     return this.isInDebugMode$.pipe(
       switchMap((isInDebugMode) => (isInDebugMode ? this.writableFeaturesService : this.overriddenFeaturesService).getFlags$())
     )
+  }
+
+  resetFlags(flags: FlagSet): void {
+    this.writableFeaturesService.resetFlags(flags);
   }
 
   enable(on: boolean): void {

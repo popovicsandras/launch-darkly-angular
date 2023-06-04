@@ -1,5 +1,5 @@
-import { ApplicationConfig, importProvidersFrom } from '@angular/core';
-import { provideRouter, withEnabledBlockingInitialNavigation, } from '@angular/router';
+import { ApplicationConfig } from '@angular/core';
+import { provideRouter } from '@angular/router';
 import { appRoutes } from './app.routes';
 import { provideDummyFeatureFlags, provideDebugFeatureFlags } from '@feature-flags';
 import { provideFeaturesFlags, provideLaunchDarklyFeatureFlags, } from '@features';
@@ -7,9 +7,8 @@ import { provideAnimations } from '@angular/platform-browser/animations';
 
 export const appConfig: ApplicationConfig = {
   providers: [
-    // For functional router guars, withEnabledBlockingInitialNavigation can not be used, since routing happens before the features are loaded.
-    // provideRouter(appRoutes, withEnabledBlockingInitialNavigation()),
-    provideRouter(appRoutes),
+    // For functional router guards, withEnabledBlockingInitialNavigation can not be used, since routing happens before the features are loaded.
+    provideRouter(appRoutes, /* withEnabledBlockingInitialNavigation() */),
     provideAnimations(),
 
     // It is supposed to be provided by ADF by default, but every app should reprovide it.
@@ -19,7 +18,11 @@ export const appConfig: ApplicationConfig = {
     provideFeaturesFlags({ url: 'http://localhost:4200/assets/flags.json' }),
 
     // Provided by every HxP application in _NOT_ release configuration
-    provideDebugFeatureFlags({storageKey: 'hxp-feature-flags'}),
+    provideDebugFeatureFlags({
+      storageKey: 'hxp-feature-flags',
+      helperExposeKeyOnDocument: 'featureOverrides',
+      rootComponentDOMSelector: () => document.querySelector('launch-darkly-angular-root') as HTMLElement,
+    }),
 
     // Fallback option to communicate directly with LaunchDarkly
     // provideLaunchDarklyFeatures(
